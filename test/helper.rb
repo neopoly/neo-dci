@@ -1,3 +1,5 @@
+require 'simplecov' if ENV['COVERAGE']
+
 require 'minitest/autorun'
 require 'simple_assertions'
 
