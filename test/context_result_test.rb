@@ -37,6 +37,11 @@ class ContextResultTest < NeoDCICase
     assert_equal data[:foo], result.data.foo
   end
 
+  test "returns data as hash" do
+    result.success!(data)
+    assert_equal data, result.data.to_hash
+  end
+
   context "frozen data" do
     test "after success!" do
       result.success!
