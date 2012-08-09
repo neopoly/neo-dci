@@ -1,4 +1,4 @@
-# Neo::DCI
+# Neo::DCI [![Build Status](https://secure.travis-ci.org/neopoly/neo-dci.png?branch=master)](http://travis-ci.org/neopoly/neo-dci)
 
 Simple DCI
 
