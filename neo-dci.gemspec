@@ -2,8 +2,8 @@
 require File.expand_path('../lib/neo/dci/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Peter Suschlik"]
-  gem.email         = ["ps@neopoly.de"]
+  gem.authors       = ["Peter Suschlik", "Jakob Holderbaum", "Jonas Thiel"]
+  gem.email         = ["ps@neopoly.de", "jh@neopoly.de", "jt@neopoly.de"]
   gem.description   = %q{Simple DCI}
   gem.summary       = %q{Includes Data, Roles and Context.}
   gem.homepage      = "https://github.com/neopoly/neo-dci"
