@@ -61,9 +61,11 @@ class RoleTest < NeoDCICase
     end
 
     test "boys don't cry!" do
-      assert_raises Neo::DCI::Role::NotAssignable, :role => CryBaby, :object => male do
+      e = assert_raises Neo::DCI::Role::NotAssignable do
         male.role_as CryBaby
       end
+      assert_equal CryBaby, e.role
+      assert_equal male, e.object
     end
 
     test "emo cores can cry! and growl!" do

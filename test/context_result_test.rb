@@ -59,13 +59,13 @@ class ContextResultTest < NeoDCICase
     end
 
     test "with success!" do
-      assert_raises ArgumentError, :message => /once/ do
+      assert_raises ArgumentError do
         result.success!
       end
     end
 
     test "with failure!" do
-      assert_raises ArgumentError, :message => /once/ do
+      assert_raises ArgumentError do
         result.failure!(error)
       end
     end
