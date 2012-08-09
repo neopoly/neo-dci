@@ -18,7 +18,68 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Data
+
+```ruby
+class User < ActiveRecord::Base
+  include Neo::DCI::Data
+
+  attr_accessible
+end
+```
+
+### Context
+
+```ruby
+class Context < Neo::DCI::Context
+end
+
+class RenameUserContext < Context
+  def initialize(user_id, new_name)
+    @user     = User.find(user_id)
+    @new_name = new_name
+  end
+
+  def call(result)
+    @user.role_as(Renamer)
+    if @user.rename_to(@new_name)
+      result.success! :new_name => @new_name
+    else
+      result.failure! "renaming failed"
+    end
+  end
+end
+```
+
+### Interaction (Role)
+
+```ruby
+module Renamer
+  extend Neo::DCI::Role
+
+  def rename_to(new_name)
+    self.name = new_name
+    save
+  end
+end
+```
+
+### Rails Controller
+
+```ruby
+class UsersController < ApplicationController
+  def rename
+    result = RenameUserContext.call(current_user.id, params[:name])
+    if result.success?
+      new_name = result.data.new_name
+      redirect_to users_path, :notice => "Renamed successfully to #{new_name}"
+    else
+      error = result.error
+      render :alert => "Renaming failed: #{error}!"
+    end
+  end
+end
+```
 
 ## Contributing
 
