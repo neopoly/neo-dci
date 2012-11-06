@@ -16,6 +16,10 @@ Or install it yourself as:
 
     $ gem install neo-dci
 
+You can generate base classes for your roles and contexts with
+
+    $ rake neo-dci:setup
+
 ## Usage
 
 ### Data
