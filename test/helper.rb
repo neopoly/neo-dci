@@ -1,12 +1,9 @@
 require 'simplecov' if ENV['COVERAGE']
 
 require 'minitest/autorun'
+require 'testem'
 
 require 'neo/dci'
 
-class NeoDCICase < MiniTest::Spec
-  class << self
-    alias :context :describe
-    alias :test :it
-  end
+class NeoDCICase < Testem
 end
