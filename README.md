@@ -1,6 +1,11 @@
 # Neo::DCI [![Build Status](https://secure.travis-ci.org/neopoly/neo-dci.png?branch=master)](http://travis-ci.org/neopoly/neo-dci)
 
-Simple DCI
+Simple DCI (Data Context Interaction).
+Includes Data, Roles and Context.
+
+[Gem](https://rubygems.org/gems/on) |
+[Source](https://github.com/neopoly/neo-dci) |
+[Documentation](http://rubydoc.info/github/neopoly/neo-dci/master/file/README.md)
 
 ## Installation
 
