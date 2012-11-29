@@ -19,4 +19,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'minitest'
   gem.add_development_dependency 'testem'
   gem.add_development_dependency 'simplecov'
+  gem.add_development_dependency 'on', '~> 0.2.0'
 end

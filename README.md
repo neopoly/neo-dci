@@ -39,17 +39,20 @@ class Context < Neo::DCI::Context
 end
 
 class RenameUserContext < Context
+  # Define callbacks called inside a context.
+  callbacks :success, :failure
+
   def initialize(user_id, new_name)
     @user     = User.find(user_id)
     @new_name = new_name
   end
 
-  def call(result)
+  def call
     @user.role_as(Renamer)
     if @user.rename_to(@new_name)
-      result.success! :new_name => @new_name
+      callback.call :success, @new_name
     else
-      result.failure! "renaming failed"
+      callback.call :failure, "renaming failed"
     end
   end
 end
@@ -73,13 +76,13 @@ end
 ```ruby
 class UsersController < ApplicationController
   def rename
-    result = RenameUserContext.call(current_user.id, params[:name])
-    if result.success?
-      new_name = result.data.new_name
-      redirect_to users_path, :notice => "Renamed successfully to #{new_name}"
-    else
-      error = result.error
-      render :alert => "Renaming failed: #{error}!"
+    RenameUserContext.call(current_user.id, params[:name]) do |callback|
+      callback.on :success do |new_name|
+        redirect_to users_path, :notice => "Renamed successfully to #{new_name}"
+      end
+      callback.on :failure do |error_message|
+        render :alert => "Renaming failed: #{error_message}!"
+      end
     end
   end
 end
