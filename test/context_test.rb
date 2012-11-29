@@ -1,56 +1,69 @@
 require 'helper'
 
 class ContextTest < NeoDCICase
-  class DummyContext < Neo::DCI::Context
-    def initialize(&block)
-      @block = block
-    end
-
-    def call(result)
-      @block.call(result)
+  class TestContext < Neo::DCI::Context
+    def initialize(*args)
+      @args = args
     end
   end
 
-  let(:data)  { {:foo => :bar }  }
-  let(:error) { RuntimeError.new }
-
   test "initialize is private" do
     assert_raises NoMethodError do
-      DummyContext.new
+      TestContext.new
     end
   end
 
   test "raises not implement error" do
     assert_raises NotImplementedError do
-      Class.new(Neo::DCI::Context).call
-    end
-  end
-
-  test "raises unprocessed error if result is not processed" do
-    assert_raises Neo::DCI::Context::UnprocessedError do
       Class.new(Neo::DCI::Context) do
-        def call(result); end
-      end.call
+        callbacks :foo
+      end.call {}
     end
   end
 
-  test "returns context result if success" do
-    result = DummyContext.call do |result|
-      result.success!(data)
+  test "yields callback" do
+    context = Class.new(TestContext) do
+      callbacks :success
+
+      def call
+        callback.call :success, @args
+      end
     end
-    assert result.success?
-    refute result.failure?
-    assert_equal :bar, result.data.foo
+
+    block_called = false
+    result = nil
+
+    context.call(:foo, :bar) do |callback|
+      block_called = true
+      callback.on :success do |args|
+        result = args
+      end
+    end
+
+    assert_equal true, block_called
+    assert_equal [ :foo, :bar ], result
   end
 
-  test "returns context result if failure" do
-    result = DummyContext.call do |result|
-      result.failure!(error, data)
+  test "ensure callback called" do
+    context = Class.new(TestContext) do
+      callbacks :success
+
+      def call
+      end
     end
-    assert result.failure?
-    refute result.success?
-    assert_same  error, result.error
-    assert_equal :bar, result.data.foo
+
+    e = assert_raises Neo::DCI::Context::NoCallbackCalled do
+      context.call do |callback|
+      end
+    end
+    assert_equal "No callback called. Available callbacks: success", e.message
   end
 
+  test "do not overwrite callbacks in subclasses" do
+    context1 = Class.new(TestContext) { callbacks :foo }
+    context2 = Class.new(TestContext) { callbacks :bar }
+
+    assert_equal [ :foo ], context1.callbacks
+    assert_equal [ :bar ], context2.callbacks
+  end
 end
