@@ -3,7 +3,7 @@
 Simple DCI (Data Context Interaction).
 Includes Data, Roles and Context.
 
-[Gem](https://rubygems.org/gems/on) |
+[Gem](https://rubygems.org/gems/neo-dci) |
 [Source](https://github.com/neopoly/neo-dci) |
 [Documentation](http://rubydoc.info/github/neopoly/neo-dci/master/file/README.md)
 
