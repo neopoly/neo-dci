@@ -44,7 +44,8 @@ class ContextTest < NeoDCICase
     assert_equal [ :foo, :bar ], result
   end
 
-  test "ensure callback called" do
+  test "allow that no callback called" do
+    block_called = false
     context = Class.new(TestContext) do
       callbacks :success
 
@@ -52,11 +53,11 @@ class ContextTest < NeoDCICase
       end
     end
 
-    e = assert_raises Neo::DCI::Context::NoCallbackCalled do
-      context.call do |callback|
-      end
+    context.call do |callback|
+      block_called = true
     end
-    assert_equal "No callback called. Available callbacks: success", e.message
+
+    refute block_called
   end
 
   test "do not overwrite callbacks in subclasses" do
