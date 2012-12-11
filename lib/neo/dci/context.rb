@@ -1,5 +1,3 @@
-require 'on'
-
 module Neo
   module DCI
     class Context
@@ -17,11 +15,16 @@ module Neo
 
       def self.call(*args, &block)
         context = new(*args)
-        context.callback = On.new(*callbacks, &block)
+        context.callback = result_class.new(*callbacks, &block)
         context.call
         raise NoCallbackCalled, callbacks unless context.callback.callback
       rescue NotImplementedError
         raise
+      end
+
+      def self.result_class(klass = :reader)
+        @result_class = klass unless klass == :reader
+        @result_class || ContextResult
       end
 
       def call
