@@ -17,7 +17,7 @@ module Neo
         context = new(*args)
         context.callback = result_class.new(*callbacks, &block)
         context.call
-        raise NoCallbackCalled, callbacks unless context.callback.callback
+        raise NoCallbackCalled, callbacks unless context.callback.called?
       rescue NotImplementedError
         raise
       end
