@@ -66,4 +66,43 @@ class ContextTest < NeoDCICase
     assert_equal [ :foo ], context1.callbacks
     assert_equal [ :bar ], context2.callbacks
   end
+
+  test "define own context result class" do
+    context_result = Class.new do
+      attr_reader :init_args, :init_block, :call_args
+
+      def initialize(*args, &block)
+        @init_args = args
+        @init_block = block
+      end
+
+      def call(*args)
+        @call_args = args
+        @init_block.call self
+      end
+
+      def called?
+        @call_args
+      end
+    end
+
+    context = Class.new(TestContext) do
+      callbacks :success
+      result_class context_result
+
+      def call
+        callback.call :some, :args
+      end
+    end
+
+    called = nil
+    context.call do |my_result|
+      called = true
+      assert_equal [:success], my_result.init_args
+      assert my_result.init_block
+      assert_equal [:some, :args], my_result.call_args
+    end
+
+    assert called
+  end
 end
