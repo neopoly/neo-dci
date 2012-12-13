@@ -68,21 +68,19 @@ class ContextTest < NeoDCICase
   end
 
   test "define own context result class" do
-    context_result = Class.new do
-      attr_reader :init_args, :init_block, :call_args
+    $success_callback_arg = nil
 
-      def initialize(*args, &block)
-        @init_args = args
-        @init_block = block
+    listener = Class.new do
+      def register_callbacks(result)
+        result.on :success do |arg|
+          $success_callback_arg = arg
+        end
       end
+    end
 
-      def call(*args)
-        @call_args = args
-        @init_block.call self
-      end
-
-      def called?
-        @call_args
+    context_result = Class.new(Neo::DCI::ContextResult) do
+      def register(listener)
+        listener.register_callbacks(self)
       end
     end
 
@@ -91,18 +89,14 @@ class ContextTest < NeoDCICase
       result_class context_result
 
       def call
-        callback.call :some, :args
+        callback.call :success, :ok
       end
     end
 
-    called = nil
     context.call do |my_result|
-      called = true
-      assert_equal [:success], my_result.init_args
-      assert my_result.init_block
-      assert_equal [:some, :args], my_result.call_args
+      my_result.register listener.new
     end
 
-    assert called
+    assert_equal :ok, $success_callback_arg
   end
 end
