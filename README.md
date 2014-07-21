@@ -1,4 +1,9 @@
-# Neo::DCI [![Build Status](https://secure.travis-ci.org/neopoly/neo-dci.png?branch=master)](http://travis-ci.org/neopoly/neo-dci)
+# Neo::DCI
+
+[![Build Status](http://img.shields.io/travis/neopoly/neo-dci.svg)](https://travis-ci.org/neopoly/neo-dci)
+[![Gem version](http://img.shields.io/gem/v/neo-dci.svg)](https://rubygems.org/gems/neo-dci)
+[![Code Climate](http://img.shields.io/codeclimate/github/neopoly/neo-dci.svg)](https://codeclimate.com/github/neopoly/neo-dci)
+[![Inline docs](http://inch-ci.org/github/neopoly/nested_config.svg?branch=master)](http://inch-ci.org/github/neopoly/nested_config)
 
 Simple DCI (Data Context Interaction).
 Includes Data, Roles and Context.
