@@ -1,16 +1,24 @@
-# Neo::DCI
+[github]: https://github.com/neopoly/neo-dci
+[doc]: http://rubydoc.info/github/neopoly/neo-dci/master/file/README.md
+[gem]: https://rubygems.org/gems/neo-dci
+[travis]: https://travis-ci.org/neopoly/neo-dci
+[codeclimate]: https://codeclimate.com/github/neopoly/neo-dci
+[inchpages]: https://inch-ci.org/github/neopoly/neo-dci
 
-[![Build Status](http://img.shields.io/travis/neopoly/neo-dci.svg)](https://travis-ci.org/neopoly/neo-dci)
-[![Gem version](http://img.shields.io/gem/v/neo-dci.svg)](https://rubygems.org/gems/neo-dci)
-[![Code Climate](http://img.shields.io/codeclimate/github/neopoly/neo-dci.svg)](https://codeclimate.com/github/neopoly/neo-dci)
-[![Inline docs](http://inch-ci.org/github/neopoly/nested_config.svg?branch=master)](http://inch-ci.org/github/neopoly/nested_config)
+# Neo::DCI
 
 Simple DCI (Data Context Interaction).
 Includes Data, Roles and Context.
 
-[Gem](https://rubygems.org/gems/neo-dci) |
-[Source](https://github.com/neopoly/neo-dci) |
-[Documentation](http://rubydoc.info/github/neopoly/neo-dci/master/file/README.md)
+[![Travis](https://img.shields.io/travis/neopoly/neo-dci.svg?branch=master)][travis]
+[![Gem Version](https://img.shields.io/gem/v/neo-dci.svg)][gem]
+[![Code Climate](https://img.shields.io/codeclimate/github/neopoly/neo-dci.svg)][codeclimate]
+[![Test Coverage](https://codeclimate.com/github/neopoly/neo-dci/badges/coverage.svg)][codeclimate]
+[![Inline docs](https://inch-ci.org/github/neopoly/neo-dci.svg?branch=master&style=flat)][inchpages]
+
+[Gem][gem] |
+[Source][github] |
+[Documentation][doc]
 
 ## Installation
 
