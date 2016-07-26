@@ -24,7 +24,7 @@ module Neo
 
       def self.result_class(klass = :reader)
         @result_class = klass unless klass == :reader
-        @result_class || ContextResult
+        defined?(@result_class) ? @result_class : ContextResult
       end
 
       def call
