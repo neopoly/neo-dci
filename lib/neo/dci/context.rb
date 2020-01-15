@@ -33,7 +33,7 @@ module Neo
 
       class NoCallbackCalled < StandardError
         def initialize(callbacks)
-          super("No callback called. Available callbacks: #{callbacks.join(', ')}")
+          super("No callback called. Available callbacks: #{callbacks.join(", ")}")
         end
       end
     end

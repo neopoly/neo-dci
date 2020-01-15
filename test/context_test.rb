@@ -1,4 +1,4 @@
-require 'helper'
+require "helper"
 
 class ContextTest < NeoDCICase
   class TestContext < Neo::DCI::Context
@@ -17,7 +17,7 @@ class ContextTest < NeoDCICase
     assert_raises NotImplementedError do
       Class.new(Neo::DCI::Context) do
         callbacks :foo
-      end.call {}
+      end.call { }
     end
   end
 
@@ -41,7 +41,7 @@ class ContextTest < NeoDCICase
     end
 
     assert_equal true, block_called
-    assert_equal [ :foo, :bar ], result
+    assert_equal [:foo, :bar], result
   end
 
   test "ensure callback called" do
@@ -63,8 +63,8 @@ class ContextTest < NeoDCICase
     context1 = Class.new(TestContext) { callbacks :foo }
     context2 = Class.new(TestContext) { callbacks :bar }
 
-    assert_equal [ :foo ], context1.callbacks
-    assert_equal [ :bar ], context2.callbacks
+    assert_equal [:foo], context1.callbacks
+    assert_equal [:bar], context2.callbacks
   end
 
   test "define own context result class" do
