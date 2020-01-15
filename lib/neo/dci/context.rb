@@ -13,8 +13,8 @@ module Neo
         @callbacks
       end
 
-      def self.call(*args, &block)
-        context = new(*args)
+      def self.call(*args, **kwargs, &block)
+        context = new(*args, **kwargs)
         context.callback = result_class.new(*callbacks, &block)
         context.call
         raise NoCallbackCalled, callbacks unless context.callback.called?
