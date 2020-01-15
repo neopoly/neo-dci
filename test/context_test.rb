@@ -100,7 +100,7 @@ class ContextTest < NeoDCICase
     assert_equal :ok, $success_callback_arg
   end
 
-  test "pass kwargs do context" do
+  test "pass attributes and kwargs do context" do
     context = Class.new(TestContext) do
       callbacks :success
 
@@ -117,6 +117,46 @@ class ContextTest < NeoDCICase
     context.call("attribute", kwarg: "kwarg") do |result|
       result.on :success do |attr, kwarg|
         assert_equal "attribute", attr
+        assert_equal "kwarg", kwarg
+      end
+    end
+  end
+
+  test "pass only attributes do context" do
+    context = Class.new(TestContext) do
+      callbacks :success
+
+      def initialize(attribute)
+        @attribute = attribute
+      end
+
+      def call
+        callback.call :success, @attribute
+      end
+    end
+
+    context.call("attribute") do |result|
+      result.on :success do |attr|
+        assert_equal "attribute", attr
+      end
+    end
+  end
+
+  test "pass only kwargs do context" do
+    context = Class.new(TestContext) do
+      callbacks :success
+
+      def initialize(kwarg:)
+        @kwarg = kwarg
+      end
+
+      def call
+        callback.call :success, @kwarg
+      end
+    end
+
+    context.call(kwarg: "kwarg") do |result|
+      result.on :success do |kwarg|
         assert_equal "kwarg", kwarg
       end
     end

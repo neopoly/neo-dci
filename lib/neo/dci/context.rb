@@ -14,7 +14,7 @@ module Neo
       end
 
       def self.call(*args, **kwargs, &block)
-        context = new(*args, **kwargs)
+        context = kwargs.any? ? new(*args, **kwargs) : new(*args)
         context.callback = result_class.new(*callbacks, &block)
         context.call
         raise NoCallbackCalled, callbacks unless context.callback.called?
