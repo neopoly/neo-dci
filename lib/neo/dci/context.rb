@@ -1,31 +1,33 @@
+require "ruby2_keywords"
+
 module Neo
   module DCI
     class Context
       class << self
         private :new
+
+        def callbacks(*args)
+          @callbacks ||= []
+          @callbacks = args unless args.empty?
+          @callbacks
+        end
+
+        ruby2_keywords def call(*args, &block)
+          context = new(*args)
+          context.callback = result_class.new(*callbacks, &block)
+          context.call
+          raise NoCallbackCalled, callbacks unless context.callback.called?
+        rescue NotImplementedError
+          raise
+        end
+
+        def result_class(klass = :reader)
+          @result_class = klass unless klass == :reader
+          defined?(@result_class) ? @result_class : ContextResult
+        end
       end
 
       attr_accessor :callback
-
-      def self.callbacks(*args)
-        @callbacks ||= []
-        @callbacks = args unless args.empty?
-        @callbacks
-      end
-
-      def self.call(*args, **kwargs, &block)
-        context = kwargs.any? ? new(*args, **kwargs) : new(*args)
-        context.callback = result_class.new(*callbacks, &block)
-        context.call
-        raise NoCallbackCalled, callbacks unless context.callback.called?
-      rescue NotImplementedError
-        raise
-      end
-
-      def self.result_class(klass = :reader)
-        @result_class = klass unless klass == :reader
-        defined?(@result_class) ? @result_class : ContextResult
-      end
 
       def call
         raise NotImplementedError

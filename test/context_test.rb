@@ -142,6 +142,26 @@ class ContextTest < NeoDCICase
     end
   end
 
+  test "pass hash as attribute do context" do
+    context = Class.new(TestContext) do
+      callbacks :success
+
+      def initialize(uid, attribute)
+        @attribute = attribute
+      end
+
+      def call
+        callback.call :success, @attribute
+      end
+    end
+
+    context.call("1", {}) do |result|
+      result.on :success do |attr|
+        assert_equal ({}), attr
+      end
+    end
+  end
+
   test "pass only kwargs do context" do
     context = Class.new(TestContext) do
       callbacks :success
