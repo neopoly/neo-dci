@@ -1,4 +1,4 @@
-require 'helper'
+require "helper"
 
 class ContextTest < NeoDCICase
   class TestContext < Neo::DCI::Context
@@ -17,7 +17,7 @@ class ContextTest < NeoDCICase
     assert_raises NotImplementedError do
       Class.new(Neo::DCI::Context) do
         callbacks :foo
-      end.call {}
+      end.call { }
     end
   end
 
@@ -41,7 +41,7 @@ class ContextTest < NeoDCICase
     end
 
     assert_equal true, block_called
-    assert_equal [ :foo, :bar ], result
+    assert_equal [:foo, :bar], result
   end
 
   test "ensure callback called" do
@@ -63,8 +63,8 @@ class ContextTest < NeoDCICase
     context1 = Class.new(TestContext) { callbacks :foo }
     context2 = Class.new(TestContext) { callbacks :bar }
 
-    assert_equal [ :foo ], context1.callbacks
-    assert_equal [ :bar ], context2.callbacks
+    assert_equal [:foo], context1.callbacks
+    assert_equal [:bar], context2.callbacks
   end
 
   test "define own context result class" do
@@ -98,5 +98,87 @@ class ContextTest < NeoDCICase
     end
 
     assert_equal :ok, $success_callback_arg
+  end
+
+  test "pass attributes and kwargs do context" do
+    context = Class.new(TestContext) do
+      callbacks :success
+
+      def initialize(attribute, kwarg:)
+        @attribute = attribute
+        @kwarg = kwarg
+      end
+
+      def call
+        callback.call :success, @attribute, @kwarg
+      end
+    end
+
+    context.call("attribute", kwarg: "kwarg") do |result|
+      result.on :success do |attr, kwarg|
+        assert_equal "attribute", attr
+        assert_equal "kwarg", kwarg
+      end
+    end
+  end
+
+  test "pass only attributes do context" do
+    context = Class.new(TestContext) do
+      callbacks :success
+
+      def initialize(attribute)
+        @attribute = attribute
+      end
+
+      def call
+        callback.call :success, @attribute
+      end
+    end
+
+    context.call("attribute") do |result|
+      result.on :success do |attr|
+        assert_equal "attribute", attr
+      end
+    end
+  end
+
+  test "pass hash as attribute do context" do
+    context = Class.new(TestContext) do
+      callbacks :success
+
+      def initialize(uid, attribute)
+        @attribute = attribute
+      end
+
+      def call
+        callback.call :success, @attribute
+      end
+    end
+
+    context.call("1", {}) do |result|
+      result.on :success do |attr|
+        assert_equal ({}), attr
+      end
+    end
+  end
+
+  test "pass only kwargs do context" do
+    context = Class.new(TestContext) do
+      callbacks :success
+
+      def initialize(kwarg:)
+        @kwarg = kwarg
+      end
+
+      def call
+        callback.call :success, @kwarg
+      end
+    end
+
+    context.call(kwarg: "kwarg") do |result|
+      result.on :success do |kwarg|
+        assert_equal "kwarg", kwarg
+      end
+    end
   end
 end
