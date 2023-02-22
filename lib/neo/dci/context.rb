@@ -1,5 +1,3 @@
-require "ruby2_keywords"
-
 module Neo
   module DCI
     class Context
@@ -12,8 +10,8 @@ module Neo
           @callbacks
         end
 
-        ruby2_keywords def call(*args, &block)
-          context = new(*args)
+        def call(*args, **kwargs, &block)
+          context = new(*args, **kwargs)
           context.callback = result_class.new(*callbacks, &block)
           context.call
           raise NoCallbackCalled, callbacks unless context.callback.called?
